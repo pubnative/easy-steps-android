@@ -8,6 +8,7 @@ android {
         targetSdkVersion 27
         versionCode 100
         versionName "0.1.0"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -30,6 +31,17 @@ dependencies {
     implementation 'com.google.android.gms:play-services-identity:12.0.1'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
+
+    implementation('com.mopub:mopub-sdk:4.19.0@aar') {
+        transitive = true
+        exclude module: 'libAvid-mopub'
+        exclude module: 'moat-mobile-app-kit'
+    }
+
+    implementation 'net.pubnative:lite.sdk:0.1.7-master.113'
+    implementation 'net.pubnative:lite.adapters.mopub:0.1.7-master.113'
 }
 
 apply plugin: 'com.google.gms.google-services'

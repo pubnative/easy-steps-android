@@ -7,10 +7,12 @@
     <Preference
         android:key="stepsize"
         android:title="@string/step_size"/>
-    <Preference
+    <!-- <Preference
         android:key="account"
         android:summary="@string/sign_in"
-        android:title="@string/account"/>
+        android:title="@string/account"
+        android:enabled="false"
+        /> -->
 
     <CheckBoxPreference
         android:defaultValue="true"

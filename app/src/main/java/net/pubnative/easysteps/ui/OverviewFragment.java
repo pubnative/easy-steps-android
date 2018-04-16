@@ -1,6 +1,7 @@
 package net.pubnative.easysteps.ui;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +14,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,12 +26,19 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mopub.mobileads.MoPubErrorCode;
+import com.mopub.mobileads.MoPubView;
+
 import net.pubnative.easysteps.BuildConfig;
 import net.pubnative.easysteps.Database;
 import net.pubnative.easysteps.R;
 import net.pubnative.easysteps.SensorListener;
 import net.pubnative.easysteps.util.Logger;
 import net.pubnative.easysteps.util.Util;
+import net.pubnative.lite.sdk.api.BannerRequestManager;
+import net.pubnative.lite.sdk.api.RequestManager;
+import net.pubnative.lite.sdk.models.Ad;
+import net.pubnative.lite.sdk.utils.PrebidUtils;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.charts.PieChart;
@@ -43,12 +51,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class OverviewFragment extends Fragment implements SensorEventListener {
+public class OverviewFragment extends Fragment implements SensorEventListener, MoPubView.BannerAdListener {
+    private static final String TAG = OverviewFragment.class.getSimpleName();
 
     private TextView stepsView, totalView, averageView;
 
     private PieModel sliceGoal, sliceCurrent;
     private PieChart pg;
+
+    private MoPubView mBannerView;
 
     private int todayOffset, total_start, goal, since_boot, total_days;
     public final static NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
@@ -89,6 +100,9 @@ public class OverviewFragment extends Fragment implements SensorEventListener {
         pg.setDrawValueInPie(false);
         pg.setUsePieRotation(true);
         pg.startAnimation();
+
+        mBannerView = v.findViewById(R.id.banner_mopub);
+
         return v;
     }
 
@@ -96,6 +110,8 @@ public class OverviewFragment extends Fragment implements SensorEventListener {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        loadAd();
 
         Database db = Database.getInstance(getActivity());
 
@@ -364,4 +380,53 @@ public class OverviewFragment extends Fragment implements SensorEventListener {
         }
     }
 
+    public void loadAd() {
+        RequestManager requestManager = new BannerRequestManager();
+        requestManager.setZoneId(getString(R.string.pnlite_banner_zone_id));
+        requestManager.setRequestListener(new RequestManager.RequestListener() {
+            @Override
+            public void onRequestSuccess(Ad ad) {
+                if (getActivity() != null && isResumed()) {
+                    mBannerView.setAdUnitId(getString(R.string.mopub_banner_ad_unit_id));
+                    mBannerView.setKeywords(PrebidUtils.getPrebidKeywords(ad, getString(R.string.pnlite_banner_zone_id)));
+                    mBannerView.loadAd();
+                }
+            }
+
+            @Override
+            public void onRequestFail(Throwable throwable) {
+                if (getActivity() != null && isResumed()) {
+                    mBannerView.setAdUnitId(getString(R.string.mopub_banner_ad_unit_id));
+                    mBannerView.loadAd();
+                }
+                Log.e(TAG, throwable.getMessage());
+            }
+        });
+        requestManager.requestAd();
+    }
+
+    @Override
+    public void onBannerLoaded(MoPubView banner) {
+        if (getActivity() != null && isResumed()) {
+            mBannerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
+        Log.e(TAG, errorCode.toString());
+    }
+
+    @Override
+    public void onBannerClicked(MoPubView banner) {
+        if (getActivity() != null && isResumed()) {
+            mBannerView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onBannerExpanded(MoPubView banner) { }
+
+    @Override
+    public void onBannerCollapsed(MoPubView banner) { }
 }

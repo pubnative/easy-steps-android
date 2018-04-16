@@ -87,9 +87,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
                     }
                 });
 
-        Preference account = findPreference("account");
+        /*Preference account = findPreference("account");
         PlaySettingsWrapper
-                .setupAccountSetting(account, savedInstanceState, (MainActivity) getActivity());
+                .setupAccountSetting(account, savedInstanceState, (MainActivity) getActivity()); */
 
         final SharedPreferences prefs =
                 getActivity().getSharedPreferences("pedometer", Context.MODE_PRIVATE);

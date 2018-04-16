@@ -5,7 +5,7 @@
         android:id="@+id/action_pause"
         android:orderInCategory="100"
         android:title="@string/pause"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -14,17 +14,14 @@
         android:id="@+id/action_achievements"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/achievements"/>
+        android:title="@string/achievements"
+        android:visible="false"/>
     <item
         android:id="@+id/action_leaderboard"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/leaderboard"/>
-    <item
-        android:id="@+id/action_faq"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/faq"/>
+        android:title="@string/leaderboard"
+        android:visible="false"/>
     <item
         android:id="@+id/action_split_count"
         android:orderInCategory="100"

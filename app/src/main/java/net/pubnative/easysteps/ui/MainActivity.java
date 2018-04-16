@@ -3,6 +3,8 @@ package net.pubnative.easysteps.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,8 +13,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (b == null) {
             // Create new fragment and transaction
             Fragment newFragment = new OverviewFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
             // Replace whatever is in the fragment_container view with this
             // fragment,
@@ -172,16 +172,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     builder2.create().show();
                 }
                 break;
-            case R.id.action_faq:
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://pubnative.net"))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                break;
             case R.id.action_about:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.about);
                 TextView tv = new TextView(this);
-                tv.setPadding(10, 10, 10, 10);
+                tv.setPadding(40, 40, 40, 40);
                 tv.setText(R.string.about_text_links);
                 try {
                     tv.append(getString(R.string.about_app_version,

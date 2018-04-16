@@ -91,4 +91,9 @@
         eaze:egLegendHeight="35dp"
         eaze:egShowValues="true"/>
 
+    <com.mopub.mobileads.MoPubView
+        android:id="@+id/banner_mopub"
+        android:layout_width="320dp"
+        android:layout_height="50dp"/>
+
 </RelativeLayout>
