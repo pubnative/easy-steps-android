@@ -3,8 +3,6 @@ package net.pubnative.easysteps.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +11,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.PermissionChecker;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ import net.pubnative.easysteps.util.GoogleFit;
 import net.pubnative.easysteps.util.Logger;
 import net.pubnative.easysteps.util.PlayServices;
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
@@ -47,15 +48,20 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     protected void onCreate(final Bundle b) {
         super.onCreate(b);
         startService(new Intent(this, SensorListener.class));
+
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         if (b == null) {
             // Create new fragment and transaction
             Fragment newFragment = new OverviewFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             // Replace whatever is in the fragment_container view with this
             // fragment,
             // and add the transaction to the back stack
-            transaction.replace(android.R.id.content, newFragment);
+            transaction.replace(R.id.fragment_container, newFragment);
 
             // Commit the transaction
             transaction.commit();
@@ -132,7 +138,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 break;
             case R.id.action_settings:
                 getFragmentManager().beginTransaction()
-                        .replace(android.R.id.content, new SettingsFragment()).addToBackStack(null)
+                        .replace(R.id.fragment_container, new SettingsFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.action_leaderboard:
@@ -152,7 +158,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     getFragmentManager().beginTransaction()
-                                            .replace(android.R.id.content, new SettingsFragment())
+                                            .replace(R.id.fragment_container, new SettingsFragment())
                                             .addToBackStack(null).commit();
                                 }
                             });

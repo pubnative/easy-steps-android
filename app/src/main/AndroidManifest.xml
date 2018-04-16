@@ -4,48 +4,46 @@
 
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
-        android:required="true"/>
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar">
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <receiver android:name=".BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".AppUpdatedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".SensorListener"/>
+        <service android:name=".SensorListener" />
 
-        <receiver
-            android:name=".ShutdownReceiver">
+        <receiver android:name=".ShutdownReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
-                <action android:name="net.pubnative.ACTION_SHUTDOWN"/>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="net.pubnative.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
 
@@ -53,55 +51,56 @@
             android:name=".widget.DashClock"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension"/>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
             </intent-filter>
 
             <meta-data
                 android:name="protocolVersion"
-                android:value="2"/>
+                android:value="2" />
             <meta-data
                 android:name="worldReadable"
-                android:value="true"/>
+                android:value="true" />
             <meta-data
                 android:name="description"
-                android:value="Displays the steps taken today"/>
+                android:value="Displays the steps taken today" />
         </service>
 
         <activity
             android:name=".widget.WidgetConfig"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <receiver android:name=".widget.Widget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget"/>
+                android:resource="@xml/widget" />
         </receiver>
 
-        <service android:name=".widget.WidgetUpdateService"/>
+        <service android:name=".widget.WidgetUpdateService" />
 
         <receiver
             android:name=".PowerReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
-            android:value="@string/app_id"/>
+            android:value="@string/app_id" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

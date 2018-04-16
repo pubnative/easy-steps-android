@@ -6,8 +6,8 @@ android {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "0.1.0"
     }
     buildTypes {
         release {
@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-games:12.0.1'
     implementation 'com.google.android.gms:play-services-identity:12.0.1'
     implementation 'com.google.firebase:firebase-core:12.0.1'
+    implementation 'com.android.support:design:27.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

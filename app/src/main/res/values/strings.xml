@@ -45,7 +45,7 @@
     <string name="total_this_month">Total this month</string>
     <string name="average_this_month">Average this month</string>
     <string name="file_already_exists">File already exists. Are you sure you want to overwrite it?</string>
-    <string name="about_text_links">This app was created by Thomas Hoffmann (<a href="https://www.j4velin.de">www.j4velin.de</a>) and uses <a href="https://github.com/blackfizz/EazeGraph">EazeGraph</a> by Paul Cech and <a href="https://github.com/attenzione/android-ColorPickerPreference">ColorPickerPreference</a> by Sergey Margaritov.\n\nPedometer is open source! Get the code and the full list of contributors from <a href="https://github.com/j4velin/Pedometer">GitHub</a>.\n\n</string>
+    <string name="about_text_links">This app was created by (<a href="https://pubnative.net">PubNative GmbH.</a>).</string>
     <string name="about_app_version">App version: %s</string>
     <string name="since">Since %s</string>
     <string name="start">Start</string>
@@ -61,4 +61,6 @@
     <string name="no_sensor">Sensor not found</string>
     <string name="no_sensor_explain">This app requires a dedicated hardware step sensor - which your device does not have. This app won\'t run on your device.</string>
     <string name="permission_external_storage">No permission to access external storage</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
 </resources>
