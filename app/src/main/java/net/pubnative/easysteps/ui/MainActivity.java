@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.PermissionChecker;
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 break;
             case R.id.action_settings:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new SettingsFragment()).addToBackStack(null)
+                        .replace(R.id.fragment_container, new SettingsContainerFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.action_leaderboard:
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     getFragmentManager().beginTransaction()
-                                            .replace(R.id.fragment_container, new SettingsFragment())
+                                            .replace(R.id.fragment_container, new SettingsContainerFragment())
                                             .addToBackStack(null).commit();
                                 }
                             });
