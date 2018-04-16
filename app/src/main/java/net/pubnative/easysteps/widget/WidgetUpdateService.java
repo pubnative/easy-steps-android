@@ -1,5 +1,6 @@
 package net.pubnative.easysteps.widget;
 
+import android.app.Notification;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;

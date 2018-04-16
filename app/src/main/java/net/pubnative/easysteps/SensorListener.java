@@ -12,6 +12,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.IBinder;
 
 import net.pubnative.easysteps.ui.MainActivity;
@@ -87,7 +88,10 @@ public class SensorListener extends Service implements SensorEventListener {
             lastSaveSteps = steps;
             lastSaveTime = System.currentTimeMillis();
             updateNotificationState();
-            startService(new Intent(this, WidgetUpdateService.class));
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                startService(new Intent(this, WidgetUpdateService.class));
+            }
         }
     }
 
