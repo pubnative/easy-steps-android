@@ -94,6 +94,7 @@
     <com.mopub.mobileads.MoPubView
         android:id="@+id/banner_mopub"
         android:layout_width="320dp"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>
