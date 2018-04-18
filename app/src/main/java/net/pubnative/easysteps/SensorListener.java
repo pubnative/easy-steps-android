@@ -18,7 +18,6 @@ import android.os.IBinder;
 import net.pubnative.easysteps.ui.MainActivity;
 import net.pubnative.easysteps.util.Logger;
 import net.pubnative.easysteps.util.Util;
-import net.pubnative.easysteps.widget.WidgetUpdateService;
 
 import java.text.NumberFormat;
 import java.util.Date;
@@ -88,10 +87,6 @@ public class SensorListener extends Service implements SensorEventListener {
             lastSaveSteps = steps;
             lastSaveTime = System.currentTimeMillis();
             updateNotificationState();
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                startService(new Intent(this, WidgetUpdateService.class));
-            }
         }
     }
 
