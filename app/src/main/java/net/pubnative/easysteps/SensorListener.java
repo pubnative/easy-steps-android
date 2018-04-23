@@ -32,7 +32,6 @@ import java.util.Locale;
  */
 public class SensorListener extends Service implements SensorEventListener {
 
-    private final static int NOTIFICATION_ID = 1;
     private final static long MICROSECONDS_IN_ONE_MINUTE = 60000000;
     private final static long SAVE_OFFSET_TIME = AlarmManager.INTERVAL_HOUR;
     private final static int SAVE_OFFSET_STEPS = 500;
@@ -176,7 +175,7 @@ public class SensorListener extends Service implements SensorEventListener {
     }
 
     private void updateNotificationState() {
-        if (BuildConfig.DEBUG) Logger.log("SensorListener updateNotificationState");
+        /*if (BuildConfig.DEBUG) Logger.log("SensorListener updateNotificationState");
         SharedPreferences prefs = getSharedPreferences("pedometer", Context.MODE_PRIVATE);
         NotificationManager nm =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -216,7 +215,7 @@ public class SensorListener extends Service implements SensorEventListener {
             nm.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             nm.cancel(NOTIFICATION_ID);
-        }
+        }*/
     }
 
     private void reRegisterSensor() {
