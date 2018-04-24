@@ -56,6 +56,12 @@ public class SettingsContainerFragment extends Fragment implements MoPubView.Ban
         loadAd();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMRectView.destroy();
+    }
+
     public void loadAd() {
         RequestManager requestManager = new MRectRequestManager();
         requestManager.setZoneId(getString(R.string.pnlite_mrect_zone_id));

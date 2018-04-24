@@ -163,6 +163,12 @@ public class OverviewFragment extends Fragment implements SensorEventListener, M
         stepsDistanceChanged();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBannerView.destroy();
+    }
+
     /**
      * Call this method if the Fragment should update the "steps"/"km" text in
      * the pie graph as well as the pie and the bars graphs.
