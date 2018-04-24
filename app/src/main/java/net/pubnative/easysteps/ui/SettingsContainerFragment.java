@@ -38,6 +38,7 @@ public class SettingsContainerFragment extends Fragment implements MoPubView.Ban
         }
 
         mMRectView = view.findViewById(R.id.mopub_mrect);
+        mMRectView.setBannerAdListener(this);
         mMRectView.setAutorefreshEnabled(false);
 
         return view;

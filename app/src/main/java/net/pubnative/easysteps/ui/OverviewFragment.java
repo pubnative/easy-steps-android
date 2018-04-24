@@ -102,6 +102,7 @@ public class OverviewFragment extends Fragment implements SensorEventListener, M
         pg.startAnimation();
 
         mBannerView = v.findViewById(R.id.banner_mopub);
+        mBannerView.setBannerAdListener(this);
         mBannerView.setAutorefreshEnabled(false);
 
         return v;
