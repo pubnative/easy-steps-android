@@ -7,8 +7,8 @@ android {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 102
-        versionName "0.1.2"
+        versionCode 103
+        versionName "0.1.3"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -45,8 +45,8 @@ dependencies {
         exclude module: 'moat-mobile-app-kit'
     }
 
-    implementation 'net.pubnative:lite.sdk:0.1.7-master.113'
-    implementation 'net.pubnative:lite.adapters.mopub:0.1.7-master.113'
+    implementation 'net.pubnative:lite.sdk:0.1.7-master.128'
+    implementation 'net.pubnative:lite.adapters.mopub:0.1.7-master.128'
 }
 
 apply plugin: 'com.google.gms.google-services'
