@@ -3,22 +3,17 @@ package net.pubnative.easysteps.ui;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,21 +22,11 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import net.pubnative.easysteps.Database;
-import net.pubnative.easysteps.PowerReceiver;
 import net.pubnative.easysteps.R;
 import net.pubnative.easysteps.SensorListener;
-import net.pubnative.easysteps.util.API23Wrapper;
 import net.pubnative.easysteps.util.PlaySettingsWrapper;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener {
