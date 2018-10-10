@@ -386,12 +386,16 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
 
     @Override
     public void onAdLoaded() {
-        mBannerView.setVisibility(View.VISIBLE);
+        if (getActivity() != null && isResumed()) {
+            mBannerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onAdLoadFailed(Throwable throwable) {
-        mBannerView.setVisibility(View.GONE);
+        if (getActivity() != null && isResumed()) {
+            mBannerView.setVisibility(View.GONE);
+        }
         Log.e(TAG, throwable.getMessage());
     }
 
@@ -402,6 +406,9 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
 
     @Override
     public void onAdClick() {
+        if (getActivity() != null && isResumed()) {
+            mBannerView.setVisibility(View.GONE);
+        }
         Log.d(TAG, "HyBid: onAdClick");
     }
 }
