@@ -7,8 +7,8 @@ android {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 200
-        versionName "0.2.0"
+        versionCode 300
+        versionName "0.3.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -32,21 +32,21 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.0'
 
-    implementation 'com.google.android.gms:play-services-fitness:15.0.1'
-    implementation 'com.google.android.gms:play-services-games:15.0.1'
-    implementation 'com.google.android.gms:play-services-identity:15.0.1'
+    implementation 'com.google.android.gms:play-services-fitness:16.0.1'
+    implementation 'com.google.android.gms:play-services-games:16.0.0'
+    implementation 'com.google.android.gms:play-services-identity:16.0.0'
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
-    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
 
-    implementation('com.mopub:mopub-sdk:5.3.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.4.0@aar') {
         transitive = true
         exclude module: 'libAvid-mopub'
         exclude module: 'moat-mobile-app-kit'
     }
 
-    implementation 'net.pubnative:hybid.sdk:0.2.6'
-    implementation 'net.pubnative:hybid.adapters.mopub:0.2.6'
+    implementation 'net.pubnative:hybid.sdk:0.3.0-development.372'
+    implementation 'net.pubnative:hybid.adapters.mopub:0.3.0-development.372'
 }
 
 apply plugin: 'com.google.gms.google-services'

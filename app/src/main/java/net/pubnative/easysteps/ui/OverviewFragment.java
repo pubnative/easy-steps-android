@@ -26,19 +26,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubView;
-
 import net.pubnative.easysteps.BuildConfig;
 import net.pubnative.easysteps.Database;
 import net.pubnative.easysteps.R;
 import net.pubnative.easysteps.SensorListener;
 import net.pubnative.easysteps.util.Logger;
 import net.pubnative.easysteps.util.Util;
-import net.pubnative.lite.sdk.api.BannerRequestManager;
-import net.pubnative.lite.sdk.api.RequestManager;
-import net.pubnative.lite.sdk.models.Ad;
-import net.pubnative.lite.sdk.utils.PrebidUtils;
+import net.pubnative.lite.sdk.views.HyBidBannerAdView;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.charts.PieChart;
@@ -51,7 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class OverviewFragment extends Fragment implements SensorEventListener, MoPubView.BannerAdListener {
+public class OverviewFragment extends Fragment implements SensorEventListener, HyBidBannerAdView.Listener {
     private static final String TAG = OverviewFragment.class.getSimpleName();
 
     private TextView stepsView, totalView, averageView;
@@ -59,7 +53,7 @@ public class OverviewFragment extends Fragment implements SensorEventListener, M
     private PieModel sliceGoal, sliceCurrent;
     private PieChart pg;
 
-    private MoPubView mBannerView;
+    private HyBidBannerAdView mBannerView;
 
     private int todayOffset, total_start, goal, since_boot, total_days;
     public final static NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
@@ -101,9 +95,7 @@ public class OverviewFragment extends Fragment implements SensorEventListener, M
         pg.setUsePieRotation(true);
         pg.startAnimation();
 
-        mBannerView = v.findViewById(R.id.banner_mopub);
-        mBannerView.setBannerAdListener(this);
-        mBannerView.setAutorefreshEnabled(false);
+        mBannerView = v.findViewById(R.id.hybid_banner);
 
         return v;
     }
@@ -389,52 +381,27 @@ public class OverviewFragment extends Fragment implements SensorEventListener, M
     }
 
     public void loadAd() {
-        RequestManager requestManager = new BannerRequestManager();
-        requestManager.setZoneId(getString(R.string.pnlite_banner_zone_id));
-        requestManager.setRequestListener(new RequestManager.RequestListener() {
-            @Override
-            public void onRequestSuccess(Ad ad) {
-                if (getActivity() != null && isResumed()) {
-                    mBannerView.setAdUnitId(getString(R.string.mopub_banner_ad_unit_id));
-                    mBannerView.setKeywords(PrebidUtils.getPrebidKeywords(ad, getString(R.string.pnlite_banner_zone_id)));
-                    mBannerView.loadAd();
-                }
-            }
-
-            @Override
-            public void onRequestFail(Throwable throwable) {
-                if (getActivity() != null && isResumed()) {
-                    mBannerView.setAdUnitId(getString(R.string.mopub_banner_ad_unit_id));
-                    mBannerView.loadAd();
-                }
-                Log.e(TAG, throwable.getMessage());
-            }
-        });
-        requestManager.requestAd();
+        mBannerView.load(getString(R.string.pnlite_banner_zone_id), this);
     }
 
     @Override
-    public void onBannerLoaded(MoPubView banner) {
-        if (getActivity() != null && isResumed()) {
-            mBannerView.setVisibility(View.VISIBLE);
-        }
+    public void onAdLoaded() {
+        mBannerView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-        Log.e(TAG, errorCode.toString());
+    public void onAdLoadFailed(Throwable throwable) {
+        mBannerView.setVisibility(View.GONE);
+        Log.e(TAG, throwable.getMessage());
     }
 
     @Override
-    public void onBannerClicked(MoPubView banner) {
-        if (getActivity() != null && isResumed()) {
-            mBannerView.setVisibility(View.GONE);
-        }
+    public void onAdImpression() {
+        Log.d(TAG, "HyBid: onAdImpression");
     }
 
     @Override
-    public void onBannerExpanded(MoPubView banner) { }
-
-    @Override
-    public void onBannerCollapsed(MoPubView banner) { }
+    public void onAdClick() {
+        Log.d(TAG, "HyBid: onAdClick");
+    }
 }
