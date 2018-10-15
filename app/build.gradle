@@ -39,8 +39,8 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
     implementation 'com.google.firebase:firebase-core:16.0.4'
 
-    implementation 'net.pubnative:hybid.sdk:0.3.0-development.372'
-    implementation 'net.pubnative:hybid.adapters.mopub:0.3.0-development.372'
+    implementation 'net.pubnative:hybid.sdk:0.3.0'
+    implementation 'net.pubnative:hybid.adapters.mopub:0.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
