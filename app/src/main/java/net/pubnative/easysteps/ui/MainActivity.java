@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final static int RC_CONSENT = 3;
 
     private final static String PREF_CONSENT = "pn_consent";
+    private final static String PREF_CONSENT_GAID = "pn_consent_gaid";
     private final static String PREF_LAST_CONSENT_ASKED_DATE = "pn_consent_date";
 
     private boolean isActive = false;
@@ -283,10 +284,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         public void run() {
             if (isActive && shouldAskForConsent()) {
-                if (HyBid.getUserDataManager().shouldAskConsent()) {
-                    Intent intent = HyBid.getUserDataManager().getConsentScreenIntent(MainActivity.this);
-                    startActivityForResult(intent, RC_CONSENT);
-                }
+                Intent intent = HyBid.getUserDataManager().getConsentScreenIntent(MainActivity.this);
+                startActivityForResult(intent, RC_CONSENT);
             }
         }
     };
@@ -295,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(PREF_CONSENT, consent);
+        editor.putString(PREF_CONSENT_GAID, HyBid.getDeviceInfo().getAdvertisingId());
         editor.putLong(PREF_LAST_CONSENT_ASKED_DATE, System.currentTimeMillis());
         editor.apply();
     }
@@ -307,17 +307,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
         boolean consentGiven = preferences.getBoolean(PREF_CONSENT, false);
+        String consentGaid = preferences.getString(PREF_CONSENT_GAID, "");
 
-        if (consentGiven) {
-            return false;
+        if (!consentGaid.equalsIgnoreCase(HyBid.getDeviceInfo().getAdvertisingId())) {
+            return true;
         } else {
-            long currentDate = System.currentTimeMillis();
-            long lastDate = preferences.getLong(PREF_LAST_CONSENT_ASKED_DATE, currentDate);
+            if (consentGiven) {
+                return false;
+            } else {
+                long currentDate = System.currentTimeMillis();
+                long lastDate = preferences.getLong(PREF_LAST_CONSENT_ASKED_DATE, currentDate);
 
-            long difference = currentDate - lastDate;
-            int daysPassed = (int) (difference / (1000 * 60 * 60 * 24));
+                long difference = currentDate - lastDate;
+                int daysPassed = (int) (difference / (1000 * 60 * 60 * 24));
 
-            return daysPassed >= 30;
+                return daysPassed >= 30;
+            }
         }
     }
 }

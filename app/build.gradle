@@ -7,8 +7,8 @@ android {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 300
-        versionName "0.3.0"
+        versionCode 301
+        versionName "0.3.1"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -40,7 +40,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.4'
 
     implementation 'net.pubnative:hybid.sdk:0.3.0'
-    implementation 'net.pubnative:hybid.adapters.mopub:0.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
