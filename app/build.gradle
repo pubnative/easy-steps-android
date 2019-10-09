@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 301
-        versionName "0.3.1"
+        targetSdkVersion 29
+        versionCode 401
+        versionName "0.4.1"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -17,12 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
 
     implementation 'com.github.j4velin.colorpicker:colorpicker:1.2.3'
     implementation 'com.github.j4velin.EazeGraph:EazeGraph:1.0.3'
@@ -30,16 +35,16 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.vectordrawable:vectordrawable:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
 
-    implementation 'com.google.android.gms:play-services-fitness:16.0.1'
-    implementation 'com.google.android.gms:play-services-games:16.0.0'
-    implementation 'com.google.android.gms:play-services-identity:16.0.0'
+    implementation 'com.google.android.gms:play-services-fitness:18.0.0'
+    implementation 'com.google.android.gms:play-services-games:18.0.1'
+    implementation 'com.google.android.gms:play-services-identity:17.0.0'
 
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
 
-    implementation 'net.pubnative:hybid.sdk:0.3.0'
+    implementation 'net.pubnative:hybid.sdk:0.6.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

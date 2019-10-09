@@ -11,11 +11,7 @@ public class EasyStepsApp extends Application {
         HyBid.initialize(getString(R.string.pnlite_app_token), this, new HyBid.InitialisationListener() {
             @Override
             public void onInitialisationFinished(boolean initializedSuccessfully) {
-                if (initializedSuccessfully) {
-                    if (HyBid.getUserDataManager().shouldAskConsent()) {
-                        HyBid.getUserDataManager().showConsentRequestScreen(EasyStepsApp.this);
-                    }
-                }
+
             }
         });
     }
