@@ -49,7 +49,7 @@ public abstract class GoogleFit {
             DataSource dataSource =
                     new DataSource.Builder().setAppPackageName(context.getPackageName())
                             .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
-                            .setName("EasySteps - step count").setType(DataSource.TYPE_RAW)
+                            .setStreamName("EasySteps - step count").setType(DataSource.TYPE_RAW)
                             .setDevice(Device.getLocalDevice(context)).build();
 
             Database db = Database.getInstance(context);
