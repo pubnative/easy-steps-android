@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/settings_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
     <net.pubnative.lite.sdk.views.HyBidMRectAdView
         android:id="@+id/hybid_mrect"
         android:layout_width="300dp"
         android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+        android:id="@+id/gam_mrect"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        ads:adSize="MEDIUM_RECTANGLE"
+        ads:adUnitId="/22272288805/Android_300x250_mediation" />
 
 </LinearLayout>

@@ -26,6 +26,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+
 import net.pubnative.easysteps.BuildConfig;
 import net.pubnative.easysteps.Database;
 import net.pubnative.easysteps.R;
@@ -54,6 +59,7 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
     private PieChart pg;
 
     private HyBidBannerAdView mBannerView;
+    private PublisherAdView mGAMBannerView;
 
     private int todayOffset, total_start, goal, since_boot, total_days;
     public final static NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
@@ -96,6 +102,8 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
         pg.startAnimation();
 
         mBannerView = v.findViewById(R.id.hybid_banner);
+        mGAMBannerView = v.findViewById(R.id.gam_banner);
+        mGAMBannerView.setAdListener(mGAMAdListener);
 
         return v;
     }
@@ -158,7 +166,9 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mBannerView.destroy();
+        //mBannerView.destroy();
+        mGAMBannerView.setAdListener(null);
+        mGAMBannerView.destroy();
     }
 
     /**
@@ -381,7 +391,9 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
     }
 
     public void loadAd() {
-        mBannerView.load(getString(R.string.pnlite_banner_zone_id), this);
+        //mBannerView.load(getString(R.string.pnlite_banner_zone_id), this);
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
+        mGAMBannerView.loadAd(adRequest);
     }
 
     @Override
@@ -411,4 +423,34 @@ public class OverviewFragment extends Fragment implements SensorEventListener, H
         }
         Log.d(TAG, "HyBid: onAdClick");
     }
+
+    private AdListener mGAMAdListener = new AdListener() {
+        @Override
+        public void onAdLoaded() {
+            if (getActivity() != null && isResumed()) {
+                mGAMBannerView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onAdFailedToLoad(LoadAdError loadAdError) {
+            if (getActivity() != null && isResumed()) {
+                mGAMBannerView.setVisibility(View.GONE);
+            }
+            Log.e(TAG, loadAdError.getMessage());
+        }
+
+        @Override
+        public void onAdImpression() {
+            Log.d(TAG, "GAM: onAdImpression");
+        }
+
+        @Override
+        public void onAdClicked() {
+            if (getActivity() != null && isResumed()) {
+                mGAMBannerView.setVisibility(View.GONE);
+            }
+            Log.d(TAG, "GAM: onAdClick");
+        }
+    };
 }

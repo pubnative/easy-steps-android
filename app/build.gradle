@@ -9,6 +9,7 @@ android {
         versionCode 500
         versionName "0.5.0"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -39,10 +40,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-fitness:20.0.0'
     implementation 'com.google.android.gms:play-services-games:21.0.0'
     implementation 'com.google.android.gms:play-services-identity:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'com.google.firebase:firebase-core:18.0.2'
 
     implementation 'net.pubnative:hybid.sdk:2.3.4'
+    implementation 'net.pubnative:hybid.adapters.dfp:2.3.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

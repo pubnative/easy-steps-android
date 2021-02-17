@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+
 import net.pubnative.easysteps.R;
 import net.pubnative.lite.sdk.views.HyBidMRectAdView;
 
@@ -18,6 +23,7 @@ public class SettingsContainerFragment extends Fragment implements HyBidMRectAdV
     private static final String TAG = SettingsContainerFragment.class.getSimpleName();
 
     private HyBidMRectAdView mMRectView;
+    private PublisherAdView mGAMMRectView;
 
     @Nullable
     @Override
@@ -34,6 +40,8 @@ public class SettingsContainerFragment extends Fragment implements HyBidMRectAdV
         }
 
         mMRectView = view.findViewById(R.id.hybid_mrect);
+        mGAMMRectView = view.findViewById(R.id.gam_mrect);
+        mGAMMRectView.setAdListener(mGAMAdListener);
 
         return view;
     }
@@ -53,11 +61,15 @@ public class SettingsContainerFragment extends Fragment implements HyBidMRectAdV
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMRectView.destroy();
+        //mMRectView.destroy();
+        mGAMMRectView.setAdListener(null);
+        mGAMMRectView.destroy();
     }
 
     public void loadAd() {
-        mMRectView.load(getString(R.string.pnlite_mrect_zone_id), this);
+        //mMRectView.load(getString(R.string.pnlite_mrect_zone_id), this);
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
+        mGAMMRectView.loadAd(adRequest);
     }
 
     @Override
@@ -87,4 +99,34 @@ public class SettingsContainerFragment extends Fragment implements HyBidMRectAdV
         }
         Log.d(TAG, "HyBid: onAdClick");
     }
+
+    private final AdListener mGAMAdListener = new AdListener() {
+        @Override
+        public void onAdLoaded() {
+            if (getActivity() != null && isResumed()) {
+                mGAMMRectView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onAdFailedToLoad(LoadAdError loadAdError) {
+            if (getActivity() != null && isResumed()) {
+                mGAMMRectView.setVisibility(View.GONE);
+            }
+            Log.e(TAG, loadAdError.getMessage());
+        }
+
+        @Override
+        public void onAdImpression() {
+            Log.d(TAG, "GAM: onAdImpression");
+        }
+
+        @Override
+        public void onAdClicked() {
+            if (getActivity() != null && isResumed()) {
+                mGAMMRectView.setVisibility(View.GONE);
+            }
+            Log.d(TAG, "GAM: onAdClick");
+        }
+    };
 }
