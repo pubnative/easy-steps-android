@@ -34,6 +34,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.games.Games;
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         builder.addScope(Games.SCOPE_GAMES);
         builder.addApi(Fitness.HISTORY_API);
         builder.addApi(Fitness.RECORDING_API);
-        builder.addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE));
 
         mGoogleApiClient = builder.build();
 
