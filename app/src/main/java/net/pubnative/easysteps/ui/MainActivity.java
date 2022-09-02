@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
@@ -22,19 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.multidex.MultiDex;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.games.Games;
@@ -46,8 +39,6 @@ import net.pubnative.easysteps.SensorListener;
 import net.pubnative.easysteps.util.GoogleFit;
 import net.pubnative.easysteps.util.Logger;
 import net.pubnative.easysteps.util.PlayServices;
-import net.pubnative.lite.sdk.HyBid;
-import net.pubnative.lite.sdk.consent.UserConsentActivity;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -55,12 +46,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     private final static int RC_RESOLVE = 1;
     private final static int RC_LEADERBOARDS = 2;
-    private final static int RC_CONSENT = 3;
     private static final int REQUEST_PERMISSIONS = 100;
-
-    private final static String PREF_CONSENT = "pn_consent";
-    private final static String PREF_CONSENT_GAID = "pn_consent_gaid";
-    private final static String PREF_LAST_CONSENT_ASKED_DATE = "pn_consent_date";
 
     private boolean isActive = false;
 
@@ -87,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             transaction.commit();
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            checkPermissions();
+        }
 
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this, this, this);
         builder.addApi(Games.API, Games.GamesOptions.builder().build());
@@ -112,13 +101,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mGoogleApiClient.connect();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            checkPermissions();
-        }
-
         isActive = true;
-
-        new Handler(Looper.getMainLooper()).postDelayed(consentRunnable, 4000);
     }
 
     @Override
@@ -288,56 +271,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 // User cancelled.
                 mGoogleApiClient.disconnect();
             }
-        } else if (requestCode == RC_CONSENT) {
-            setConsent(resultCode == UserConsentActivity.RESULT_CONSENT_ACCEPTED);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    private final Runnable consentRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (isActive && shouldAskForConsent()) {
-                Intent intent = HyBid.getUserDataManager().getConsentScreenIntent(MainActivity.this);
-                startActivityForResult(intent, RC_CONSENT);
-            }
-        }
-    };
-
-    public void setConsent(boolean consent) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(PREF_CONSENT, consent);
-        editor.putString(PREF_CONSENT_GAID, HyBid.getDeviceInfo().getAdvertisingId());
-        editor.putLong(PREF_LAST_CONSENT_ASKED_DATE, System.currentTimeMillis());
-        editor.apply();
-    }
-
-    public boolean shouldAskForConsent() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (!preferences.contains(PREF_CONSENT)) {
-            return true;
-        }
-
-        boolean consentGiven = preferences.getBoolean(PREF_CONSENT, false);
-        String consentGaid = preferences.getString(PREF_CONSENT_GAID, "");
-
-        if (!consentGaid.equalsIgnoreCase(HyBid.getDeviceInfo().getAdvertisingId())) {
-            return true;
-        } else {
-            if (consentGiven) {
-                return false;
-            } else {
-                long currentDate = System.currentTimeMillis();
-                long lastDate = preferences.getLong(PREF_LAST_CONSENT_ASKED_DATE, currentDate);
-
-                long difference = currentDate - lastDate;
-                int daysPassed = (int) (difference / (1000 * 60 * 60 * 24));
-
-                return daysPassed >= 30;
-            }
         }
     }
 
