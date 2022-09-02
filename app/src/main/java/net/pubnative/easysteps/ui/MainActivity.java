@@ -10,13 +10,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.multidex.MultiDex;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final static int RC_RESOLVE = 1;
     private final static int RC_LEADERBOARDS = 2;
     private final static int RC_CONSENT = 3;
+    private static final int REQUEST_PERMISSIONS = 100;
 
     private final static String PREF_CONSENT = "pn_consent";
     private final static String PREF_CONSENT_GAID = "pn_consent_gaid";
@@ -107,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mGoogleApiClient.connect();
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            checkPermissions();
+        }
+
         isActive = true;
 
         new Handler(Looper.getMainLooper()).postDelayed(consentRunnable, 4000);
@@ -121,6 +130,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
         isActive = false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public GoogleApiClient getGC() {
@@ -323,6 +338,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 return daysPassed >= 30;
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, REQUEST_PERMISSIONS);
         }
     }
 }

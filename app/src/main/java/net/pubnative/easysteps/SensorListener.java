@@ -1,5 +1,6 @@
 package net.pubnative.easysteps;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -111,15 +112,22 @@ public class SensorListener extends Service implements SensorEventListener {
                 Database db = Database.getInstance(this);
                 db.addToLastEntry(-difference);
                 db.close();
-                prefs.edit().remove("pauseCount").commit();
+                prefs.edit().remove("pauseCount").apply();
                 updateNotificationState();
             } else { // pause counting
                 // cancel restart
-                ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
-                        .cancel(PendingIntent.getService(getApplicationContext(), 2,
-                                new Intent(this, SensorListener.class),
-                                PendingIntent.FLAG_UPDATE_CURRENT));
-                prefs.edit().putInt("pauseCount", steps).commit();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
+                            .cancel(PendingIntent.getService(getApplicationContext(), 2,
+                                    new Intent(this, SensorListener.class),
+                                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
+                } else {
+                    ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
+                            .cancel(PendingIntent.getService(getApplicationContext(), 2,
+                                    new Intent(this, SensorListener.class),
+                                    PendingIntent.FLAG_UPDATE_CURRENT));
+                }
+                prefs.edit().putInt("pauseCount", steps).apply();
                 updateNotificationState();
                 stopSelf();
                 return START_NOT_STICKY;
@@ -133,12 +141,21 @@ public class SensorListener extends Service implements SensorEventListener {
         }
 
         // restart service every hour to save the current step count
-        ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
-                .set(AlarmManager.RTC, Math.min(Util.getTomorrow(),
-                        System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR), PendingIntent
-                        .getService(getApplicationContext(), 2,
-                                new Intent(this, SensorListener.class),
-                                PendingIntent.FLAG_UPDATE_CURRENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
+                    .set(AlarmManager.RTC, Math.min(Util.getTomorrow(),
+                            System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR), PendingIntent
+                            .getService(getApplicationContext(), 2,
+                                    new Intent(this, SensorListener.class),
+                                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
+        } else {
+            ((AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE))
+                    .set(AlarmManager.RTC, Math.min(Util.getTomorrow(),
+                            System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR), PendingIntent
+                            .getService(getApplicationContext(), 2,
+                                    new Intent(this, SensorListener.class),
+                                    PendingIntent.FLAG_UPDATE_CURRENT));
+        }
 
         return START_STICKY;
     }

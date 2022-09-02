@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     defaultConfig {
         applicationId "net.pubnative.easysteps"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 500
         versionName "0.5.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -27,6 +28,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0-alpha2'
+    implementation "androidx.multidex:multidex:2.0.1"
 
     implementation 'com.github.j4velin.colorpicker:colorpicker:1.2.3'
     implementation 'com.github.j4velin.EazeGraph:EazeGraph:1.0.3'
@@ -42,7 +44,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:18.0.2'
 
-    implementation 'net.pubnative:hybid.sdk:2.3.4'
+    implementation 'net.pubnative:hybid.sdk:2.16.0-development_kotlin.9717'
 }
 
 apply plugin: 'com.google.gms.google-services'
