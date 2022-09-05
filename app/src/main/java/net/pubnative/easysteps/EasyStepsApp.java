@@ -8,7 +8,7 @@ public class EasyStepsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        HyBid.initialize(getString(R.string.pnlite_app_token), this, new HyBid.InitialisationListener() {
+        HyBid.initialize("dde3c298b47648459f8ada4a982fa92d", this, new HyBid.InitialisationListener() {
             @Override
             public void onInitialisationFinished(boolean initializedSuccessfully) {
 

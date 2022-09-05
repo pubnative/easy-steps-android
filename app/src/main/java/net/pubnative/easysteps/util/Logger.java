@@ -46,7 +46,7 @@ public abstract class Logger {
         try {
             if (fw == null) {
                 fw = new FileWriter(new File(
-                        Environment.getExternalStorageDirectory().toString() + "/" + APP + ".log"),
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + APP + ".log"),
                         true);
             }
             date.setTime(System.currentTimeMillis());
